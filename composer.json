@@ -1,0 +1,24 @@
+{
+    "name": "ruskid/yii2-nouislider",
+    "type": "library",
+    "description": "Yii2 noUiSlider Wrapper",
+    "keywords": ["yii2","nouislider"],
+    "homepage": "https://github.com/ruskid/yii2-nouislider",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Victor Demin",
+            "email": "demmbox@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "bower-asset/nouislider": "*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+         "psr-4": {
+             "ruskid\\nouislider\\": ""
+         }
+    }
+}
