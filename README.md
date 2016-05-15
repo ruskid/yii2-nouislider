@@ -29,17 +29,19 @@ Check http://refreshless.com/nouislider/ for options.
 
 use ruskid\nouislider\Slider;
 
-echo $form->field($model, 'maxDistance')
-->widget(Slider::className(), [
+echo $form->field($model, 'maxDistance')->widget(Slider::className(), [
+    'lowerValueContainerId' => 'lowerContainer',
+    'upperValueContainerId' => 'upperContainer',
     'pluginOptions' => [
-        'start' => [20, 80],
-        'connect' => true,
+        'start' => [ 20, 30 ],
         'range' => [
-            'min' => 0,
-            'max' => 100
+            'min' => [0],
+            'max' => [100]
         ]
     ]
 ]);
+<div id="lowerContainer"></div>
+<div id="upperContainer"></div>
 ```
 
 ```php
@@ -47,7 +49,7 @@ echo Slider::widget([
     'name'=>'test',
     'value'=>21,
     'pluginOptions' => [
-        'start' => [20, 80],
+        'start' => [20],
         'connect' => true,
         'range' => [
             'min' => 0,

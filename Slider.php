@@ -20,24 +20,53 @@ use ruskid\nouislider\SliderAsset;
 class Slider extends InputWidget {
 
     /**
-     * @var array noUiSlider config in array format
+     * @see http://refreshless.com/nouislider/
+     * @var array noUiSlider config options in array format
      */
     public $pluginOptions;
 
     /**
+     * @var string Slider tag
+     */
+    public $sliderTag = 'div';
+
+    /**
+     * @var array Slider div options. Can be used to customize sliders
+     */
+    public $sliderTagOptions = ['class' => 'ruskid-nouislider'];
+
+    /**
      * @var string Id of container with lower value selected
      */
-    public $lowerValueContainerId = '';
+    public $lowerValueContainerId;
 
     /**
      * @var string Id of container with higher value selected
      */
-    public $upperValueContainerId = '';
+    public $upperValueContainerId;
+
+    /**
+     * @var string Character separating values in hidden input. Used on 2 handle case.
+     */
+    public $valueSeparator = '|';
 
     /**
      * @var string
      */
     const SLIDER_ID_POSTFIX = '_nouislider';
+
+    /**
+     * @var boolean If slider has 1 or 2 handles
+     */
+    private $_twoHandleCase = false;
+
+    /**
+     * Init slider. 
+     */
+    public function init() {
+        parent::init(); //Check if sldier has 2 handles
+        $this->_twoHandleCase = count($this->pluginOptions['start']) === 2;
+    }
 
     /**
      * @inheritdoc
@@ -48,7 +77,7 @@ class Slider extends InputWidget {
 
         $this->renderSlider();
         $this->renderInput();
-        //$this->registerUpdateSliderJs();
+        $this->registerUpdateSliderJs();
     }
 
     /**
@@ -61,13 +90,8 @@ class Slider extends InputWidget {
         $js = "var $sliderId = document.getElementById('$sliderId'); noUiSlider.create($sliderId, $jsOptions);";
         $view->registerJs($js);
 
-        $sliderTagOptions = [
-            'id' => $sliderId,
-            'data-input' => $this->options['id'],
-            'data-lower-container' => $this->lowerValueContainerId,
-            'data-upper-container' => $this->upperValueContainerId
-        ];
-        echo Html::tag('div', '', $sliderTagOptions);
+        $this->sliderTagOptions['id'] = $sliderId;
+        echo Html::tag($this->sliderTag, '', $this->sliderTagOptions);
     }
 
     /**
@@ -87,28 +111,42 @@ class Slider extends InputWidget {
     }
 
     /**
+     * Register Slider Update JS Handler. 
      */
     public function registerUpdateSliderJs() {
-       /* $view = $this->getView();
         $sliderId = $this->constructSliderId();
+        $inputId = $this->options['id'];
 
         $js = "$sliderId.noUiSlider.on('update', function( values, handle ) {
-            if ( handle ) {
-                var inputId = $sliderId.getAttributeNode('data-input').value;
-                var lowerContainerId = $sliderId.getAttributeNode('data-lower-container').value;  
-                var uppwerContainerId = $sliderId.getAttributeNode('data-upper-container').value;
-
-                
-
-
-                document.getElementById(inputId).value = values[handle];
+            if('$this->lowerValueContainerId'){
+                document.getElementById('$this->lowerValueContainerId').innerHTML = values[0];
             }
-            
-            valueInput.addEventListener('change', function(){
-                range.noUiSlider.set([null, this.value]);
-            });
+            if('$this->upperValueContainerId' && '$this->_twoHandleCase'){
+                document.getElementById('$this->upperValueContainerId').innerHTML = values[1];
+            }
+            var input = document.getElementById('$inputId');
+            if('$this->_twoHandleCase'){
+                var inputValueArray = input.value.split('$this->valueSeparator');   
+                if(handle){
+                    input.value = inputValueArray[0] + '$this->valueSeparator' + values[1];
+                }else{
+                    input.value = values[0] + '$this->valueSeparator' + inputValueArray[1];
+                }
+            }else{
+                input.value = values[0];
+            }
         });";
-        $view->registerJs($js);*/
+        
+        $this->getView()->registerJs($js);
+    }
+    
+    /**
+     * If input updated. set slider's values.
+     */
+    public function registerUpdateInputJs(){
+       /* "document.getElementById('$inputId').addEventListener('change', function(){
+            $sliderId.noUiSlider.set([this.value]);
+        });";*/
     }
 
 }
