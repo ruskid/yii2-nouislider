@@ -106,8 +106,8 @@ class Slider extends InputWidget {
      */
     private function renderInput() {
         echo $this->hasModel() ?
-                Html::activeTextInput($this->model, $this->attribute, $this->options) :
-                Html::textInput($this->name, $this->value, $this->options);
+                Html::activeHiddenInput($this->model, $this->attribute, $this->options) :
+                Html::hiddenInput($this->name, $this->value, $this->options);
     }
 
     /**
