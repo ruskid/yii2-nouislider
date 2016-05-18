@@ -9,6 +9,7 @@
 namespace ruskid\nouislider;
 
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\widgets\InputWidget;
 use ruskid\nouislider\SliderAsset;
 
@@ -86,7 +87,7 @@ class Slider extends InputWidget {
     private function renderSlider() {
         $view = $this->getView();
         $sliderId = $this->constructSliderId();
-        $jsOptions = json_encode($this->pluginOptions);
+        $jsOptions = Json::encode($this->pluginOptions);
         $js = "var $sliderId = document.getElementById('$sliderId'); noUiSlider.create($sliderId, $jsOptions);";
         $view->registerJs($js);
 
