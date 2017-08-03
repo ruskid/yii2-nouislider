@@ -166,6 +166,7 @@ class Slider extends InputWidget {
             }else{
                 input.value = values[0];
             }
+            input.dispatchEvent(new Event('change'));
         }");
     }
 
