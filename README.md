@@ -50,7 +50,7 @@ echo Slider::widget([
     'value'=>21,
     'pluginOptions' => [
         'start' => [20],
-        'connect' => true,
+        'connect' => false,
         'range' => [
             'min' => 0,
             'max' => 100
