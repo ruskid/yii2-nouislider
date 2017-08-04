@@ -13,7 +13,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "bower-asset/nouislider": "*"
+        "bower-asset/nouislider": "10.1.0"
     },
     "minimum-stability": "dev",
     "autoload": {

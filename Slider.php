@@ -109,7 +109,7 @@ class Slider extends InputWidget {
      */
     private function renderSlider() {
         $view = $this->getView();
-
+        
         $jsOptions = Json::encode($this->pluginOptions);
         $js = "var {$this->javascriptSliderId} = document.getElementById('" . $this->id . "'); "
                 . "noUiSlider.create($this->javascriptSliderId, $jsOptions);";
