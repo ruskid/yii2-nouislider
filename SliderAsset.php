@@ -17,7 +17,7 @@ use yii\web\AssetBundle;
  */
 class SliderAsset extends AssetBundle {
 
-    public $sourcePath = '@bower/nouislider/distribute';    
+    public $sourcePath = '@npm/nouislider/distribute';    
     public function init() {
         $this->css[] = YII_DEBUG ? 'nouislider.css' : 'nouislider.min.css';
         $this->js[] = YII_DEBUG ? 'nouislider.js' : 'nouislider.min.js';
