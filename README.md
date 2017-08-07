@@ -77,9 +77,9 @@ echo Slider::widget([
 
 ### Sliders with default behavior
 
-You can use some of the sliders inside sliders directory and create your own extenind Main Slider.
+You can use some of the sliders inside sliders directory and create your own. Extend Main Slider.
 
-Pull request your sliders!
+**Pull request your sliders!**
 
 ```php
 
