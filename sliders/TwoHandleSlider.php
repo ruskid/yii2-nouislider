@@ -43,6 +43,7 @@ class TwoHandleSlider extends Slider {
         $this->pluginOptions['start'] = $this->getStartOptions();
 
         $this->registerUpdateEvent();
+        $this->registerSlideEvent();
         $this->registerChangeEvent();
     }
 
@@ -56,7 +57,7 @@ class TwoHandleSlider extends Slider {
 
         if ($inputValue) {
             $exploded = explode($this->valueSeparator, $inputValue);
-            if (isset($exploded[0]) && isset($exploded[1])) {
+            if (!empty($exploded[0]) && !empty($exploded[1])) {
                 return [$exploded[0], $exploded[1]];
             }
         }
@@ -65,11 +66,9 @@ class TwoHandleSlider extends Slider {
     }
 
     /**
-     * Sync container id and hidden input with slider
+     * Sync container ids with slider
      */
     protected function registerUpdateEvent() {
-        $inputId = $this->options['id'];
-
         $this->events[self::NOUI_EVENT_UPDATE] = new JsExpression(
                 "function( values, handle ) {
   
@@ -80,7 +79,17 @@ class TwoHandleSlider extends Slider {
             if('$this->upperValueContainerId'){
                 document.getElementById('$this->upperValueContainerId').innerHTML = values[1];
             }  
+        }");
+    }
 
+    /**
+     * Sync input with slider
+     */
+    protected function registerSlideEvent() {
+        $inputId = $this->options['id'];
+
+        $this->events[self::NOUI_EVENT_SLIDE] = new JsExpression(
+                "function( values, handle ) {
             var input = document.getElementById('$inputId');
             input.value = values[0] + '$this->valueSeparator' + values[1];
         }");

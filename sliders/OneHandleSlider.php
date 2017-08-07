@@ -33,6 +33,7 @@ class OneHandleSlider extends Slider {
         $this->pluginOptions['start'] = $this->getStartOption();
 
         $this->registerUpdateEvent();
+        $this->registerSlideEvent();
         $this->registerChangeEvent();
     }
 
@@ -44,7 +45,7 @@ class OneHandleSlider extends Slider {
         $inputValue = $this->hasModel() ?
                 $this->model->{$this->attribute} : $this->value;
 
-        if ($inputValue) {
+        if (!empty($inputValue)) {
             return $inputValue;
         }
 
@@ -53,18 +54,26 @@ class OneHandleSlider extends Slider {
     }
 
     /**
-     * Sync container id and hidden input with slider
+     * Sync container id with slider
      */
     protected function registerUpdateEvent() {
-        $inputId = $this->options['id'];
-
         $this->events[self::NOUI_EVENT_UPDATE] = new JsExpression(
                 "function( values, handle ) {
   
             if('$this->valueContainerId'){
                 document.getElementById('$this->valueContainerId').innerHTML = values[0];
             }
+        }");
+    }
 
+    /**
+     * Sync input with slider
+     */
+    protected function registerSlideEvent() {
+        $inputId = $this->options['id'];
+
+        $this->events[self::NOUI_EVENT_SLIDE] = new JsExpression(
+                "function( values, handle ) {
             var input = document.getElementById('$inputId');
             input.value = values[0];
         }");
@@ -80,8 +89,7 @@ class OneHandleSlider extends Slider {
         $this->events[self::NOUI_EVENT_CHANGE] = new JsExpression(
                 "function( values, handle ) {
 
-            var sliderValue = values[0];
-            if($startValue != sliderValue){
+            if($startValue != values[0]){
                 var input = document.getElementById('$inputId');
                 input.dispatchEvent(new Event('change'));
             }
