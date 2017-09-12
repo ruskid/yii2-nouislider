@@ -41,10 +41,17 @@ class TwoHandleSlider extends Slider {
 
         //Preload start options from input's value
         $this->pluginOptions['start'] = $this->getStartOptions();
+    }
 
+    /**
+     * Run Two Handler Slider
+     */
+    public function run() {
         $this->registerUpdateEvent();
         $this->registerSlideEvent();
         $this->registerChangeEvent();
+
+        parent::run();
     }
 
     /**
@@ -57,6 +64,7 @@ class TwoHandleSlider extends Slider {
 
         if ($inputValue) {
             $exploded = explode($this->valueSeparator, $inputValue);
+
             if (!empty($exploded[0]) && !empty($exploded[1])) {
                 return [$exploded[0], $exploded[1]];
             }

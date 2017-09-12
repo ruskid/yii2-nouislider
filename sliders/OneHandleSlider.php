@@ -31,10 +31,17 @@ class OneHandleSlider extends Slider {
 
         //Preload start optinos from input's value
         $this->pluginOptions['start'] = $this->getStartOption();
+    }
 
+    /**
+     * Run widget
+     */
+    public function run() {
         $this->registerUpdateEvent();
         $this->registerSlideEvent();
         $this->registerChangeEvent();
+
+        parent::run();
     }
 
     /**

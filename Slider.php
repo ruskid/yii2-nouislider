@@ -8,6 +8,7 @@
 
 namespace ruskid\nouislider;
 
+use yii\web\View;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\InputWidget;
@@ -61,7 +62,7 @@ class Slider extends InputWidget {
      */
     public function init() {
         parent::init();
-        
+
         if (!$this->javascriptSliderId) { //remove special characters   
             $removedcharacters = preg_replace('/[^a-zA-Z]+/', '', $this->id);
             $this->javascriptSliderId = $removedcharacters . self::JS_NAME_POSTFIX;
@@ -86,17 +87,28 @@ class Slider extends InputWidget {
         $view = $this->getView();
 
         $jsOptions = Json::encode($this->pluginOptions);
-        $js = "var {$this->javascriptSliderId} = document.getElementById('" . $this->id . "'); "
-                . "noUiSlider.create($this->javascriptSliderId, $jsOptions);";
 
-        foreach ($this->events as $eventName => $expression) {
-            $js .= "{$this->javascriptSliderId}.noUiSlider.on('$eventName', $expression);";
-        }
+        $view->registerJs("function init_{$this->javascriptSliderId}() {
+            var {$this->javascriptSliderId} = document.getElementById('" . $this->id . "');
+            noUiSlider.create({$this->javascriptSliderId}, {$jsOptions});
+            {$this->getEventsJsString()}
+        }", View::POS_END);
 
-        $view->registerJs($js);
+        $view->registerJs("init_{$this->javascriptSliderId}();");
 
         $this->sliderTagOptions['id'] = $this->id;
         echo Html::tag($this->sliderTag, '', $this->sliderTagOptions);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEventsJsString() {
+        $eventJs = '';
+        foreach ($this->events as $eventName => $expression) {
+            $eventJs .= "{$this->javascriptSliderId}.noUiSlider.on('$eventName', $expression);";
+        }
+        return $eventJs;
     }
 
     /**
