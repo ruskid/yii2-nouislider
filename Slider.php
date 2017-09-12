@@ -22,9 +22,9 @@ use ruskid\nouislider\SliderAsset;
 class Slider extends InputWidget {
 
     /**
-     * @var string Javascript variable name for slider
+     * @var string Slider Tag ID and Javascript variable 
      */
-    public $javascriptSliderId;
+    public $sliderId;
 
     /**
      * @see http://refreshless.com/nouislider/
@@ -63,9 +63,9 @@ class Slider extends InputWidget {
     public function init() {
         parent::init();
 
-        if (!$this->javascriptSliderId) { //remove special characters   
+        if (!$this->sliderId) { //remove special characters   
             $removedcharacters = preg_replace('/[^a-zA-Z]+/', '', $this->id);
-            $this->javascriptSliderId = $removedcharacters . self::JS_NAME_POSTFIX;
+            $this->sliderId = $removedcharacters . self::JS_NAME_POSTFIX;
         }
     }
 
@@ -88,15 +88,15 @@ class Slider extends InputWidget {
 
         $jsOptions = Json::encode($this->pluginOptions);
 
-        $view->registerJs("function init_{$this->javascriptSliderId}() {
-            var {$this->javascriptSliderId} = document.getElementById('" . $this->id . "');
-            noUiSlider.create({$this->javascriptSliderId}, {$jsOptions});
+        $view->registerJs("function init_{$this->sliderId}() {
+            var {$this->sliderId} = document.getElementById('" . $this->sliderId . "');
+            noUiSlider.create({$this->sliderId}, {$jsOptions});
             {$this->getEventsJsString()}
         }", View::POS_END);
 
-        $view->registerJs("init_{$this->javascriptSliderId}();");
+        $view->registerJs("init_{$this->sliderId}();");
 
-        $this->sliderTagOptions['id'] = $this->id;
+        $this->sliderTagOptions['id'] = $this->sliderId;
         echo Html::tag($this->sliderTag, '', $this->sliderTagOptions);
     }
 
@@ -106,7 +106,7 @@ class Slider extends InputWidget {
     protected function getEventsJsString() {
         $eventJs = '';
         foreach ($this->events as $eventName => $expression) {
-            $eventJs .= "{$this->javascriptSliderId}.noUiSlider.on('$eventName', $expression);";
+            $eventJs .= "{$this->sliderId}.noUiSlider.on('$eventName', $expression);";
         }
         return $eventJs;
     }
