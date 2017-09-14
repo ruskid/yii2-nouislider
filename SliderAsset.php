@@ -19,7 +19,7 @@ class SliderAsset extends AssetBundle {
 
     public $sourcePath = '@npm/nouislider/distribute';
     public $js = [
-        'nouislider.min.css'
+        'nouislider.min.js'
     ];
     public $css = [
         'nouislider.min.css'
