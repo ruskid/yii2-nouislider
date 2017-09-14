@@ -17,10 +17,19 @@ use yii\web\AssetBundle;
  */
 class SliderAsset extends AssetBundle {
 
-    public $sourcePath = '@npm/nouislider/distribute';    
+    public $sourcePath = '@npm/nouislider/distribute';
+    public $js = [
+        'nouislider.min.css'
+    ];
+    public $css = [
+        'nouislider.min.css'
+    ];
+
     public function init() {
-        $this->css[] = YII_DEBUG ? 'nouislider.css' : 'nouislider.min.css';
-        $this->js[] = YII_DEBUG ? 'nouislider.js' : 'nouislider.min.js';
+        if (YII_DEBUG) {
+            $this->css = ['nouislider.css'];
+            $this->js = ['nouislider.js'];
+        }
         parent::init();
     }
 
